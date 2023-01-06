@@ -1,16 +1,20 @@
-name: Terraform GCP Deployment
+name: Create VM
 
 on:
   push:
-    branches:
-      - master
+    branches: [ main ]
 
 jobs:
-  deploy:
+  build:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
-      - name: Authenticate with GCP
-        run: gcloud auth application-default login
-      - name: Apply Terraform configuration
-        run: terraform apply
+    - uses: actions/checkout@v2
+    
+      with:
+        terraform_version: 0.13.5
+    - uses: actions/setup-python@v2
+      with:
+        python-version: 3.7
+    
+    - run: terraform init
+    - run: terraform apply -auto-approve
